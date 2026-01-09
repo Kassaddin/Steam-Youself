@@ -1,25 +1,4 @@
-const imageApi = window.steamImage || window.htmlToImage || null;
-
-const toPng = (...args) => {
-  if (!imageApi?.toPng) {
-    throw new Error('Image export is unavailable.');
-  }
-  return imageApi.toPng(...args);
-};
-
-const toJpeg = (...args) => {
-  if (!imageApi?.toJpeg) {
-    throw new Error('Image export is unavailable.');
-  }
-  return imageApi.toJpeg(...args);
-};
-
-const toWebp = (...args) => {
-  if (!imageApi?.toWebp) {
-    throw new Error('Image export is unavailable.');
-  }
-  return imageApi.toWebp(...args);
-};
+const { toPng, toJpeg, toWebp } = window.steamImage;
 
 const carouselInput = document.getElementById('carousel-input');
 const bannerInput = document.getElementById('banner-input');
@@ -35,19 +14,6 @@ const exportHtmlButton = document.getElementById('export-html');
 let carouselItems = [];
 let carouselIndex = 0;
 let activeEditable = null;
-
-const saveAssetFile = async (file) => {
-  if (window.steamApi?.saveAsset) {
-    return window.steamApi.saveAsset({
-      sourcePath: file.path,
-      originalName: file.name
-    });
-  }
-
-  return {
-    url: URL.createObjectURL(file)
-  };
-};
 
 const renderCarousel = () => {
   carouselViewport.innerHTML = '';
@@ -89,19 +55,14 @@ const updateReleaseDate = (dateValue) => {
   releaseDateDisplay.textContent = formatted;
 };
 
-carouselInput.addEventListener('change', async (event) => {
+carouselInput.addEventListener('change', (event) => {
   const files = Array.from(event.target.files).slice(0, 10 - carouselItems.length);
-  const savedItems = await Promise.all(
-    files.map(async (file) => {
-      const result = await saveAssetFile(file);
-      return {
-        type: file.type,
-        url: result.url
-      };
-    })
-  );
-
-  carouselItems = carouselItems.concat(savedItems);
+  files.forEach((file) => {
+    carouselItems.push({
+      type: file.type,
+      url: URL.createObjectURL(file)
+    });
+  });
 
   if (carouselItems.length > 0) {
     carouselIndex = carouselItems.length - 1;
@@ -111,14 +72,13 @@ carouselInput.addEventListener('change', async (event) => {
   carouselInput.value = '';
 });
 
-bannerInput.addEventListener('change', async (event) => {
+bannerInput.addEventListener('change', (event) => {
   const [file] = event.target.files;
   if (!file) {
     return;
   }
-  const result = await saveAssetFile(file);
   const img = document.createElement('img');
-  img.src = result.url;
+  img.src = URL.createObjectURL(file);
   bannerPreview.innerHTML = '';
   bannerPreview.appendChild(img);
 });

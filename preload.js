@@ -3,8 +3,7 @@ const { toJpeg, toPng, toWebp } = require('html-to-image');
 
 contextBridge.exposeInMainWorld('steamApi', {
   saveImage: (payload) => ipcRenderer.invoke('save-image', payload),
-  saveHtml: (payload) => ipcRenderer.invoke('save-html', payload),
-  saveAsset: (payload) => ipcRenderer.invoke('save-asset', payload)
+  saveHtml: (payload) => ipcRenderer.invoke('save-html', payload)
 });
 
 contextBridge.exposeInMainWorld('steamImage', {

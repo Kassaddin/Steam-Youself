@@ -1,10 +1,6 @@
 const { app, BrowserWindow, dialog, ipcMain } = require('electron');
 const path = require('path');
-const { pathToFileURL } = require('url');
 const fs = require('fs/promises');
-const crypto = require('crypto');
-
-let assetsDir = '';
 
 const createWindow = () => {
   const mainWindow = new BrowserWindow({
@@ -21,10 +17,7 @@ const createWindow = () => {
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
 };
 
-app.whenReady().then(async () => {
-  assetsDir = path.join(app.getPath('userData'), 'assets');
-  await fs.mkdir(assetsDir, { recursive: true });
-
+app.whenReady().then(() => {
   createWindow();
 
   app.on('activate', () => {
@@ -74,19 +67,4 @@ ipcMain.handle('save-html', async (event, { html }) => {
   await fs.writeFile(filePath, html, 'utf8');
 
   return { canceled: false, filePath };
-});
-
-ipcMain.handle('save-asset', async (event, { sourcePath, originalName }) => {
-  const extension = path.extname(originalName || sourcePath);
-  const baseName = path.basename(originalName || sourcePath, extension);
-  const safeName = baseName.replace(/[^a-z0-9-_]/gi, '_').toLowerCase();
-  const uniqueName = `${safeName || 'asset'}-${crypto.randomUUID()}${extension}`;
-  const targetPath = path.join(assetsDir, uniqueName);
-
-  await fs.copyFile(sourcePath, targetPath);
-
-  return {
-    filePath: targetPath,
-    url: pathToFileURL(targetPath).toString()
-  };
 });
