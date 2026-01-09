@@ -55,22 +55,14 @@ const updateReleaseDate = (dateValue) => {
   releaseDateDisplay.textContent = formatted;
 };
 
-carouselInput.addEventListener('change', async (event) => {
+carouselInput.addEventListener('change', (event) => {
   const files = Array.from(event.target.files).slice(0, 10 - carouselItems.length);
-  const savedItems = await Promise.all(
-    files.map(async (file) => {
-      const result = await window.steamApi.saveAsset({
-        sourcePath: file.path,
-        originalName: file.name
-      });
-      return {
-        type: file.type,
-        url: result.url
-      };
-    })
-  );
-
-  carouselItems = carouselItems.concat(savedItems);
+  files.forEach((file) => {
+    carouselItems.push({
+      type: file.type,
+      url: URL.createObjectURL(file)
+    });
+  });
 
   if (carouselItems.length > 0) {
     carouselIndex = carouselItems.length - 1;
@@ -80,17 +72,13 @@ carouselInput.addEventListener('change', async (event) => {
   carouselInput.value = '';
 });
 
-bannerInput.addEventListener('change', async (event) => {
+bannerInput.addEventListener('change', (event) => {
   const [file] = event.target.files;
   if (!file) {
     return;
   }
-  const result = await window.steamApi.saveAsset({
-    sourcePath: file.path,
-    originalName: file.name
-  });
   const img = document.createElement('img');
-  img.src = result.url;
+  img.src = URL.createObjectURL(file);
   bannerPreview.innerHTML = '';
   bannerPreview.appendChild(img);
 });
