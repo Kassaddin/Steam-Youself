@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Steam Yourself</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app">
+    <section class="controls" data-export="omit">
+      <div class="controls__group">
+        <h2>Export</h2>
+        <div class="controls__row">
+          <button class="btn" data-export-image="png">Export PNG</button>
+          <button class="btn" data-export-image="jpg">Export JPG</button>
+          <button class="btn" data-export-image="webp">Export WEBP</button>
+          <button class="btn" id="export-html">Export HTML</button>
+        </div>
+      </div>
+      <div class="controls__group">
+        <h2>Assets</h2>
+        <div class="controls__row">
+          <label class="btn btn--outline" for="carousel-input">Add carousel media</label>
+          <input id="carousel-input" type="file" accept="image/png,image/jpeg,image/webp,video/mp4,video/webm,video/avif" multiple />
+          <label class="btn btn--outline" for="banner-input">Upload banner</label>
+          <input id="banner-input" type="file" accept="image/png,image/jpeg,image/webp" />
+        </div>
+      </div>
+    </section>
+
+    <section id="page" class="page">
+      <header class="page__header">
+        <div class="page__title" contenteditable="true" spellcheck="false">Your Steam Game Name</div>
+        <div class="page__subtitle">Create a Steam-like showcase in minutes.</div>
+      </header>
+
+      <section class="page__media">
+        <div class="carousel">
+          <button class="carousel__control" id="carousel-prev">◀</button>
+          <div class="carousel__viewport" id="carousel-viewport">
+            <div class="carousel__placeholder">Drop in up to 10 screenshots or videos.</div>
+          </div>
+          <button class="carousel__control" id="carousel-next">▶</button>
+        </div>
+        <div class="carousel__meta">
+          <span id="carousel-count">0 / 10 media loaded</span>
+        </div>
+      </section>
+
+      <section class="banner">
+        <div class="banner__image" id="banner-preview">
+          <span>Upload a banner image</span>
+        </div>
+      </section>
+
+      <section class="description">
+        <h3>Description</h3>
+        <div class="toolbar" data-export="omit">
+          <button class="btn btn--tiny" data-command="bold">Bold</button>
+          <button class="btn btn--tiny" data-command="italic">Italic</button>
+          <button class="btn btn--tiny" data-command="underline">Underline</button>
+          <button class="btn btn--tiny" data-command="insertUnorderedList">Bullets</button>
+          <button class="btn btn--tiny" data-command="insertOrderedList">Numbers</button>
+        </div>
+        <div class="editable" contenteditable="true" spellcheck="false">
+          <p>Describe your game with style. Highlight features, mood, and what makes it unique.</p>
+        </div>
+      </section>
+
+      <section class="stats">
+        <div class="stats__block">
+          <h3>Recent Reviews</h3>
+          <select id="review-select">
+            <option>Overwhelmingly Positive</option>
+            <option>Very Positive</option>
+            <option selected>Positive</option>
+            <option>Mostly Positive</option>
+            <option>Mixed</option>
+            <option>Mostly Negative</option>
+            <option>Negative</option>
+          </select>
+        </div>
+        <div class="stats__block">
+          <h3>Release Date</h3>
+          <input id="release-date" type="date" />
+          <div class="stats__date" id="release-date-display">21 Oct, 2025</div>
+        </div>
+        <div class="stats__block">
+          <h3>Developer</h3>
+          <div class="editable" contenteditable="true" spellcheck="false">
+            <p>Your Studio Name</p>
+          </div>
+        </div>
+        <div class="stats__block">
+          <h3>Publisher</h3>
+          <div class="editable" contenteditable="true" spellcheck="false">
+            <p>Your Publishing Partner</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="comments">
+        <header class="comments__header">
+          <div class="user">
+            <div class="user__avatar"></div>
+            <div>
+              <div class="user__name">PlayerOne</div>
+              <div class="user__meta">42 products in account</div>
+            </div>
+          </div>
+          <div class="recommendation">
+            <select id="recommendation-select">
+              <option>Recommended</option>
+              <option>Not Recommended</option>
+            </select>
+          </div>
+        </header>
+        <div class="toolbar" data-export="omit">
+          <button class="btn btn--tiny" data-command="bold">Bold</button>
+          <button class="btn btn--tiny" data-command="italic">Italic</button>
+          <button class="btn btn--tiny" data-command="underline">Underline</button>
+          <button class="btn btn--tiny" data-command="insertUnorderedList">Bullets</button>
+          <button class="btn btn--tiny" data-command="insertOrderedList">Numbers</button>
+          <button class="btn btn--tiny" data-command="createLink">Link</button>
+        </div>
+        <div class="editable" contenteditable="true" spellcheck="false">
+          <p>This game nails the atmosphere. The soundtrack and art direction kept me hooked for hours.</p>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script src="renderer.js"></script>
+</body>
+</html>
